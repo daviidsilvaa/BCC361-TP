@@ -13,10 +13,10 @@ public class ServerComm implements Runnable{
 	public void run() {
 		// Quando chega um frame, distribui para todos
 		Scanner scanner = new Scanner(this.client);
-//		String str;
-
+		String str;
+		
 		while (scanner.hasNextLine()) {
-			String str = new String(scanner.nextLine());
+			str = new String(scanner.nextLine());
 			
 			PhysicalLayer physical = new PhysicalLayer();
 			EnlaceLayer enlace = new EnlaceLayer();
@@ -25,11 +25,16 @@ public class ServerComm implements Runnable{
 			// physical.sendFrame();
 			// Camada de Enlace recebe frade de bytes da Camada Fisica
 			physical.setFrame(str);
+			
+			physical.convert5Bto4B();
+			
+			System.out.println(physical.getFrame());
+			
+			physical.convert4Bto5B();
+			
 			enlace.receiveFrame(physical.sendFrame());
 			
-			System.out.println(new String(enlace.getFrame()));
-
-			server.sendMessage(str);
+			server.sendMessage(enlace.getFrame());
 		}
 		scanner.close();
 	}

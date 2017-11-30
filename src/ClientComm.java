@@ -18,6 +18,7 @@ public class ClientComm implements Runnable{
 			// Camada de Enlace envia frame de bytes para a Camada Fisica
 			// enlace.sendFrame(str);
 			// Camada Fisica recebe frame de bytes da Camada de Enlace
+			
 			enlace.receiveFrame(scanner.nextLine());
 			physical.receiveFrame(enlace.sendFrame());
 		

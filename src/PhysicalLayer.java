@@ -7,11 +7,9 @@ public class PhysicalLayer{
 
 	public void receiveFrame(String f) {
 		this.frame = new String(f);
-		this.frame = this.Convert5Bto4B();
 	}
 
 	public String sendFrame() {
-		this.frame = this.Convert4Bto5B();
 		return this.frame;
 	}
 
@@ -22,23 +20,24 @@ public class PhysicalLayer{
 	public void setFrame(String f) {
 		this.frame = f;
 	}
-
-	public String Convert5Bto4B(){
-		String B5_temp = new String();
-		String B4 = new String();
+	
+	public void convert5Bto4B(){
+		String B5_temp = new String(); // Terá tamanho 5
+		String B4 = new String("");
 
 		for(int i = 0; i < (this.frame.length()/5); i++) {
 			B5_temp = "";
-			for(int j = 0; j < 4; j++) {
-				B5_temp += String.valueOf(this.frame.charAt(i+j));
+			
+			for(int j = 0; j < 5; j++) {
+				B5_temp += String.valueOf(this.frame.charAt((i*5)+j));
 			}
-
-			B4 = B4 + returnB4(B5_temp);
+			B4 += returnB4(B5_temp);
 		}
-		return B4;
+		
+		this.setFrame(B4);
 	}
 
-	public String Convert4Bto5B(){
+	public void convert4Bto5B(){
 
 		String B4_temp = new String(""); // Terá tamanho 4
 		String B5 = new String("");
@@ -52,64 +51,7 @@ public class PhysicalLayer{
 			B5 = B5 + returnB5(B4_temp);
 		}
 
-		return B5;
-	}
-
-	public String returnB5(String B4) {
-		String B5 = new String("");
-
-		switch (B4){
-			case "0000":
-				B5 = "11110";
-				break;
-			case "0001":
-				B5 = "01001";
-				break;
-			case "0010":
-				B5 = "10100";
-				break;
-			case "0011":
-				B5 = "10101";
-				break;
-			case "0100":
-				B5 = "01010";
-				break;
-			case "0101":
-				B5 = "01011";
-				break;
-			case "0110":
-				B5 = "01110";
-				break;
-			case "0111":
-				B5 = "01111";
-				break;
-			case "1000":
-				B5 = "10010";
-				break;
-			case "1001":
-				B5 = "10011";
-				break;
-			case "1010":
-				B5 = "10110";
-				break;
-			case "1011":
-				B5 = "10111";
-				break;
-			case "1100":
-				B5 = "11010";
-				break;
-			case "1101":
-				B5 = "11011";
-				break;
-			case "1110":
-				B5 = "11100";
-				break;
-			case "1111":
-				B5 = "11101";
-				break;
-		}
-
-		return B5;
+		this.setFrame(B5);
 	}
 
 	public String returnB4(String B5) {
@@ -167,5 +109,62 @@ public class PhysicalLayer{
 		}
 
 		return B4;
+	}
+	
+	public String returnB5(String B4) {
+		String B5 = new String("");
+
+		switch (B4){
+			case "0000":
+				B5 = "11110";
+				break;
+			case "0001":
+				B5 = "01001";
+				break;
+			case "0010":
+				B5 = "10100";
+				break;
+			case "0011":
+				B5 = "10101";
+				break;
+			case "0100":
+				B5 = "01010";
+				break;
+			case "0101":
+				B5 = "01011";
+				break;
+			case "0110":
+				B5 = "01110";
+				break;
+			case "0111":
+				B5 = "01111";
+				break;
+			case "1000":
+				B5 = "10010";
+				break;
+			case "1001":
+				B5 = "10011";
+				break;
+			case "1010":
+				B5 = "10110";
+				break;
+			case "1011":
+				B5 = "10111";
+				break;
+			case "1100":
+				B5 = "11010";
+				break;
+			case "1101":
+				B5 = "11011";
+				break;
+			case "1110":
+				B5 = "11100";
+				break;
+			case "1111":
+				B5 = "11101";
+				break;
+		}
+
+		return B5;
 	}
 }
