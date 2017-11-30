@@ -25,7 +25,6 @@ public class Server {
 			System.out.println("Nova conexão com o cliente " + client.getInetAddress().getHostAddress());
 
 			// Adiciona saida do cliente a lista
-//			PrintStream print_stream = new PrintStream(client.getOutputStream());
 			this.clients.add(new PrintStream(client.getOutputStream()));
 
 			// Cria comunicador de cliente numa nova thread
