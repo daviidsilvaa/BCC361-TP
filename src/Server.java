@@ -34,7 +34,7 @@ public class Server {
 	}
 	
 	public void sendMessage(String frame) {
-		System.out.println(frame);
+		// System.out.println(frame);
 		
 		// Envia mensagem para todo mundo
 		for (PrintStream client : this.clients) {

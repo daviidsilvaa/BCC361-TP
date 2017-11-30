@@ -3,35 +3,32 @@
 
 public class EnlaceLayer{
 
-	private byte frame[];
-//	private static Random r = new Random();
-	
+	private String frame;
+
 	EnlaceLayer(){ }
-	
-	public void receiveFrame(byte recv[]) {
-		this.frame = recv.clone();
+
+	public void receiveFrame(String f) {
+		this.frame = new String(f);
 	}
 	
-	public byte[] sendFrame(String size) {
-		this.frame = size.getBytes();
-		
+	public String sendFrame() {
     	return this.frame;
     }
 	
-	public byte[] getFrame() {
+	public String getFrame() {
 		return this.frame;
 	}
 }
 
 //public static byte[] sendFrame(String size) {
 //	frame = size.getBytes();
-//	
+//
 ////	data = new byte[Integer.parseInt(size)*4];
 //	System.out.println("frame.size: " + frame.length);
 //
 //	for(int i = 0; i < frame.length; i++) {
 //		frame[i] = (byte)r.nextInt(2);
 //	}
-//	
+//
 //	return frame;
 //}

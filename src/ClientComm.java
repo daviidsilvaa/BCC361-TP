@@ -10,28 +10,19 @@ public class ClientComm implements Runnable{
 
 	public void run() {
 		Scanner scanner = new Scanner(this.server);
-		
+
 		while (scanner.hasNextLine()) {
+			PhysicalLayer physical = new PhysicalLayer();
+			EnlaceLayer enlace = new EnlaceLayer();
 			
-			String str = scanner.nextLine();
-			
-//			// Caso tenha tamanho 5, o frame deve ser enviado para a Camada Fisica
-//			if((str.length()%5) == 0) {
-//				
-//			}
-//			// Caso nao tenha, o frame esta chegando da Camada Fisica e deve ser impressa no client
-//			else {
-//				PhysicalLayer p = new PhysicalLayer();
-//				EnlaceLayer e = new EnlaceLayer();
-//				
-//				p.receiveFrame(str.getBytes());
-//				
-//				e.receiveFrame(p.sendFrame());
-//				
-//				System.out.println(new String(e.getFrame()));
-//			}
-			
-			System.out.println(str);
+			// Camada de Enlace envia frame de bytes para a Camada Fisica
+			// enlace.sendFrame(str);
+			// Camada Fisica recebe frame de bytes da Camada de Enlace
+			enlace.receiveFrame(scanner.nextLine());
+			physical.receiveFrame(enlace.sendFrame());
+		
+			// Camada Fisica envia frame de bytes para o Server
+			System.out.println(new String(physical.getFrame()));
 		}
 		scanner.close();
 	}
