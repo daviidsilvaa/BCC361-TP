@@ -22,7 +22,7 @@ public class Server {
 		while(true){
 			// Aceita um cliente
 			Socket client = servidor.accept();
-			System.out.println("Nova conexão com o cliente " + client.getInetAddress().getHostAddress());
+			System.out.println("New connection with client " + client.getInetAddress().getHostAddress());
 
 			// Adiciona saida do cliente a lista
 			this.clients.add(new PrintStream(client.getOutputStream()));
@@ -33,8 +33,6 @@ public class Server {
 	}
 	
 	public void sendMessage(String frame) {
-		// System.out.println(frame);
-		
 		// Envia mensagem para todo mundo
 		for (PrintStream client : this.clients) {
 			client.println(frame);

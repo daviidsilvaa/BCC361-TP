@@ -1,4 +1,6 @@
 
+import java.util.Random;
+
 
 public class PhysicalLayer{
 	private String frame;
@@ -16,24 +18,24 @@ public class PhysicalLayer{
 	public String getFrame() {
 		return this.frame;
 	}
-	
+
 	public void setFrame(String f) {
 		this.frame = f;
 	}
-	
+
 	public void convert5Bto4B(){
 		String B5_temp = new String(); // Terá tamanho 5
 		String B4 = new String("");
 
 		for(int i = 0; i < (this.frame.length()/5); i++) {
 			B5_temp = "";
-			
+
 			for(int j = 0; j < 5; j++) {
 				B5_temp += String.valueOf(this.frame.charAt((i*5)+j));
 			}
 			B4 += returnB4(B5_temp);
 		}
-		
+
 		this.setFrame(B4);
 	}
 
@@ -53,6 +55,21 @@ public class PhysicalLayer{
 
 		this.setFrame(B5);
 	}
+
+	String generateError(String frame, int prob_error){
+		int index = new Random().nextInt(frame.length());
+
+		if (new Random().nextInt(100) < prob_error){
+            if (frame.charAt(index) == '0'){
+                frame = frame.substring(0, index) + '1' + frame.substring(index + 1);
+            }
+            else if (frame.charAt(index) == '1'){
+                frame = frame.substring(0, index) + '0' + frame.substring(index + 1);
+            }
+        }
+
+        return frame;
+    }
 
 	public String returnB4(String B5) {
 		String B4 = new String("");
@@ -110,7 +127,7 @@ public class PhysicalLayer{
 
 		return B4;
 	}
-	
+
 	public String returnB5(String B4) {
 		String B5 = new String("");
 
