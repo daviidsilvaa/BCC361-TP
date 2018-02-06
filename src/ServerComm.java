@@ -25,16 +25,17 @@ public class ServerComm implements Runnable{
 			// physical.sendFrame();
 			// Camada de Enlace recebe frade de bytes da Camada Fisica
 			physical.setFrame(str);
-			physical.convert4Bto5B();
+			physical.convert5Bto4B();
 
-			System.out.println("Frame received: " + physical.getFrame());
+			System.out.println("Frame received:\t" + physical.getFrame());
 
 			// Gera error na sequencia de bits do frame recebido pela Camada Física
-			physical.setFrame(physical.generateError(physical.getFrame(), 100));
+			physical.setFrame(physical.generateError(physical.getFrame(), 20));
 
-			System.out.println("Frame sended: " + physical.getFrame());
+			System.out.println("Frame sended:\t" + physical.getFrame());
 
-			physical.convert5Bto4B();
+			physical.convert4Bto5B();
+
 			enlace.receiveFrame(physical.sendFrame());
 			server.sendMessage(enlace.getFrame());
 		}

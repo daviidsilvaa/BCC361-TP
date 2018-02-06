@@ -23,6 +23,23 @@ public class PhysicalLayer{
 		this.frame = f;
 	}
 
+	String generateError(String frame, int prob_error){
+		int index = new Random().nextInt(frame.length());
+
+		if (new Random().nextInt(100) < prob_error){
+			System.out.println("\t! error !");
+
+            if (frame.charAt(index) == '0'){
+                frame = frame.substring(0, index) + '1' + frame.substring(index + 1);
+            }
+            else if (frame.charAt(index) == '1'){
+                frame = frame.substring(0, index) + '0' + frame.substring(index + 1);
+            }
+        }
+
+        return frame;
+    }
+
 	public void convert5Bto4B(){
 		String B5_temp = new String(); // Terá tamanho 5
 		String B4 = new String("");
@@ -47,7 +64,7 @@ public class PhysicalLayer{
 		for(int i = 0; i < (this.frame.length()/4); i++) {
 			B4_temp = "";
 			for(int j = 0; j < 4; j++) {
-				B4_temp += String.valueOf(this.frame.charAt(i+j));
+				B4_temp += String.valueOf(this.frame.charAt((i*4)+j));
 			}
 
 			B5 = B5 + returnB5(B4_temp);
@@ -56,20 +73,8 @@ public class PhysicalLayer{
 		this.setFrame(B5);
 	}
 
-	String generateError(String frame, int prob_error){
-		int index = new Random().nextInt(frame.length());
+	// 127.0.0.1 111100100110101010111001101011011100111110010
 
-		if (new Random().nextInt(100) < prob_error){
-            if (frame.charAt(index) == '0'){
-                frame = frame.substring(0, index) + '1' + frame.substring(index + 1);
-            }
-            else if (frame.charAt(index) == '1'){
-                frame = frame.substring(0, index) + '0' + frame.substring(index + 1);
-            }
-        }
-
-        return frame;
-    }
 
 	public String returnB4(String B5) {
 		String B4 = new String("");

@@ -1,6 +1,7 @@
 import java.io.InputStream;
 import java.util.Scanner;
 
+
 public class ClientComm implements Runnable{
 	private InputStream server;
 
@@ -10,7 +11,7 @@ public class ClientComm implements Runnable{
 
 	public void run() {
 		Scanner scanner = new Scanner(this.server);
-
+		
 		while (scanner.hasNextLine()) {
 			PhysicalLayer physical = new PhysicalLayer();
 			EnlaceLayer enlace = new EnlaceLayer();

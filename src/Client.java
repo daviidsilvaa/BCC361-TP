@@ -7,7 +7,6 @@ import java.util.Scanner;
 public class Client{
 	private String host;
 	private int port;
-//	private Socket client;
 	   
 	public Client(String host, int port) {
 		this.host = host;
@@ -17,10 +16,9 @@ public class Client{
 	public void execute() throws UnknownHostException, IOException {
 		Socket client = new Socket(this.host, this.port);
 
-		// Thread para receber mensagens do servidor
-//		ClientComm receiver = new ClientComm(this.client.getInputStream());
+		// Thread para enviar mensagens do servidor
 		new Thread(new ClientComm(client.getInputStream())).start();
-
+		
 		// Recebe frame do teclado e envia para o servidor
 		Scanner keyboard = new Scanner(System.in);
 		PrintStream frame = new PrintStream(client.getOutputStream());
