@@ -18,16 +18,17 @@ public class ServerComm implements Runnable{
 		while (scanner.hasNextLine()) {
 			str = new String(scanner.nextLine());
 			str_aux = str_bit = new String("");
-
+			
 			// converte cada Char para seu respectivo valor em Bits
 			for(int i = 0; i < str.length(); i++){
 				str_aux += Integer.toBinaryString(str.charAt(i));
 			}
+			System.out.println("str: " + str + "\t" + str.length());
 			// corrige a ordem dos bits dentro da string de bits
 			for(int i = 0; i < str_aux.length(); i++){
 				str_bit += str_aux.charAt(str_aux.length() - 1 - i);
 			}
-
+			System.out.println("str_bit: " + str_bit + "\t" + str_bit.length());
 			PhysicalLayer physical = new PhysicalLayer();
 			EnlaceLayer enlace = new EnlaceLayer();
 
