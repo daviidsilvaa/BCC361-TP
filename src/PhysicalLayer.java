@@ -24,10 +24,10 @@ public class PhysicalLayer{
 	}
 
 	String generateError(String frame, int prob_error){
-		int index = new Random().nextInt(frame.length());
+		int index = new Random().nextInt(frame.length()/5);
 
 		if (new Random().nextInt(100) < prob_error){
-			System.out.println("\t! error !");
+			System.out.println("\t! PhysicalLayer: error !");
 
             if (frame.charAt(index) == '0'){
                 frame = frame.substring(0, index) + '1' + frame.substring(index + 1);
@@ -81,9 +81,6 @@ public class PhysicalLayer{
 
 		this.setFrame(B5);
 	}
-
-	// 127.0.0.1 111100100110101010111001101011011100111110010
-
 
 	public String returnB4(String B5) {
 		String B4 = new String("");
