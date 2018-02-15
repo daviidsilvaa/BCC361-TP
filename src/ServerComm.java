@@ -11,67 +11,34 @@ public class ServerComm implements Runnable{
 	}
 
 	public void run() {
-		// Quando chega um frame, distribui para todos
+		// Quando chega uma mensagem, distribui para todos
 		Scanner scanner = new Scanner(this.client);
-		String str, str_bit, str_aux;
+		String str, str_bit, str_aux, str_client;
+		int index;
 
 		while (scanner.hasNextLine()) {
-			str = new String(scanner.nextLine());
-			str_aux = str_bit = new String("");
-			
-			// converte cada Char para seu respectivo valor em Bits
-			for(int i = 0; i < str.length(); i++){
-				str_aux += Integer.toBinaryString(str.charAt(i));
-			}
-			System.out.println("str: " + str + "\t" + str.length());
-			// corrige a ordem dos bits dentro da string de bits
-			for(int i = 0; i < str_aux.length(); i++){
-				str_bit += str_aux.charAt(str_aux.length() - 1 - i);
-			}
-			System.out.println("str_bit: " + str_bit + "\t" + str_bit.length());
 			PhysicalLayer physical = new PhysicalLayer();
 			EnlaceLayer enlace = new EnlaceLayer();
+			ApplicationLayer application = new ApplicationLayer();
 
+			application.setFrame(scanner.nextLine()); // Camada de Aplicacao recebe mensagem do Cliente
+			application.down(); // Camada de Aplicacao aplica operaceos ate enviar mensagem para a Camada de Enlace
+			enlace.setFrame(application.getFrame()); // Camada de Enlace recebe mensagem da Camada de Aplicacao
+			physical.setFrame(enlace.sendFrame()); // Camada Fisica recebe mensagem da Camada de Enlace
+			physical.convert4Bto5B();	// camada fisica aplica 4B/5B
 
-			// Camada Fisica envia frame de bytes para a Camada de Enlace
-			// physical.sendFrame();
-			// Camada de Enlace recebe frade de bytes da Camada Fisica
-			physical.setFrame(str_bit);
-			physical.convert4Bto5B();
-			//128.0.0.1
 			System.out.println("Frame received:\t" + physical.getFrame());
 
-			// gera error na sequencia de bits do frame recebido pela Camada Física
-			physical.setFrame(physical.generateError(physical.getFrame(), 0));
+			physical.setFrame(physical.generateError(physical.getFrame(), 0)); // gera error na sequencia de bits do frame recebido pela Camada Física
 
 			System.out.println("Frame sended:\t" + physical.getFrame());
 
-			physical.convert5Bto4B();
+			physical.convert5Bto4B(); // Camada Fisica aplica 5B/4B
+			enlace.setFrame(physical.getFrame()); // Camada de Enlace recebe mensagem da Camada Fisica
+			application.setFrame(enlace.getFrame()); // Camada de Aplicacao recebe mensagem da Camada de Enlace
+			application.up(); // Camada de Aplicacao aplica operaceos ate enviar mensagem para o Cliente
 
-			enlace.receiveFrame(physical.sendFrame());
-			
-			// converte cada sequencia de Bit para seu valor em Char
-			str = new String("");
-			for(int i = 0; i < enlace.getFrame().length(); i += 7){
-				int potencia = 0, asc_val = 0;
-				
-				for(int j = 0; j < 7; j++){
-					if(str_bit.charAt(i + j) == '1'){
-						asc_val += (int)Math.pow(2, potencia);
-					}
-					potencia += 1;
-				}
-				str += (char)asc_val;
-			}
-			
-			// corrige a ordem da cadeia de Char que será impressa
-			str_aux = str;
-			str = new String("");
-			for(int i = 0; i < str_aux.length(); i++)
-				str += str_aux.charAt(str_aux.length() - 1 - i);
-			
-			//server.sendMessage(enlace.getFrame());
-			server.sendMessage(str);
+			server.sendMessage(application.getFrame());	// Server envia mensagem para Clientes
 		}
 		scanner.close();
 	}
