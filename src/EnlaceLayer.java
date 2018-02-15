@@ -5,26 +5,18 @@ public class EnlaceLayer{
 
 	EnlaceLayer(){ }
 
-	public void receiveFrame(String f) {
-		this.frame = new String(f);
-	}
-
-	public String sendFrame() {
-    	return this.frame;
-    }
-
 	public String getFrame() {
 		return this.frame;
 	}
 	public void setFrame(String frame) {
-		this.frame = frame;
+		this.frame = new String(frame);
 	}
-	
+
 	// Detecção De Erro
-	
+
     public void detectParityBit(String frame) {	//	bits de paridade
         int count = 0;
-        
+
         for(int i = 0; i < frame.length(); i++){
            if (frame.charAt(i) == '1'){
             	count++;
@@ -36,10 +28,10 @@ public class EnlaceLayer{
         	this.setFrame(frame + "1");
         }
     }
-    
+
     static void detectErro(String frame){
         int count = 0;
-        
+
         for(int i = 0; i < frame.length(); i++){
             if(frame.charAt(i) == '1') {
                 count++;
@@ -51,12 +43,11 @@ public class EnlaceLayer{
             System.out.println("Paridade: ERRO");
         }
     }
-    
+
     // Checksum
-    public static String[] frameBreaker(String frame) {
+    public String[] frameBreaker(String frame) {
     	int flag = 0;
     	int seg_size;
-        
 
         if (frame.length() % 5 == 0) {
             flag = 1;
@@ -79,25 +70,17 @@ public class EnlaceLayer{
 
         return segments;
     }
-    
+
     public String solveChecksum(String frame) {
-        int seg_size;
+        int seg_size = frame.length()/7;
         int flag = 0;
 
-        if (frame.length() % 5 == 0) {
-            flag = 1;
-            seg_size = frame.length() / 5;
-        } else {
-            flag = 0;
-            seg_size = frame.length() / 4;
-        }
         String[] segments = new String[seg_size];
 
-        for (int i = 0, j = 0; i < frame.length(); i += (4 + flag), j++) {
+        for (int i = 0, j = 0; i < frame.length(); i += (7 + flag), j++) {
             String frame1 = "";
-            for (int k = i; k < i + (4 + flag) && k < frame.length(); k++) {
+            for (int k = i; k < i + (7 + flag) && k < frame.length(); k++) {
                 frame1 = frame1 + frame.charAt(k);
-
             }
 
             segments[j] = frame1;
@@ -110,7 +93,7 @@ public class EnlaceLayer{
 
         String checksum = Integer.toBinaryString(sum);
         String inverted = "";
-        
+
         for (int i = 0; i < checksum.length(); i++) {
             if (checksum.charAt(i) == '0') {
                 inverted += '1';
@@ -127,10 +110,10 @@ public class EnlaceLayer{
         for (int i = 0; i < seg_size - 1; i++) {
             ret += segments[i];
         }
-        
+
         return ret;
     }
-    
+
     public String createChecksum(String[] segments) {
 
         int sum = 0;
@@ -141,7 +124,7 @@ public class EnlaceLayer{
         String checksum = Integer.toBinaryString(sum);
         String f = "";
         String invertedChecksum = "";
-        
+
         for (int k = 0; k < checksum.length(); k++) {
             if (checksum.charAt(k) == '0') {
                 invertedChecksum += '1';
@@ -164,5 +147,3 @@ public class EnlaceLayer{
 
     }
 }
-
-
