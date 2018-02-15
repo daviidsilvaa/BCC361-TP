@@ -52,7 +52,7 @@ public class PhysicalLayer{
 			}
 			B4 += returnB4(B5_temp);
 		}
-		
+
 		for(int i = (this.frame.length() - (this.frame.length()%5)); i < this.frame.length(); i++) {
 			B4 = B4 + String.valueOf(this.frame.charAt(i));
 		}
@@ -67,13 +67,14 @@ public class PhysicalLayer{
 
 		for(int i = 0; i < (this.frame.length()/4); i++) {
 			B4_temp = "";
+
 			for(int j = 0; j < 4; j++) {
 				B4_temp += String.valueOf(this.frame.charAt((i*4)+j));
 			}
-			
+
 			B5 = B5 + returnB5(B4_temp);
 		}
-		
+
 		for(int i = (this.frame.length() - (this.frame.length()%4)); i < this.frame.length(); i++) {
 			B5 = B5 + String.valueOf(this.frame.charAt(i));
 		}
